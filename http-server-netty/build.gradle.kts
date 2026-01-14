@@ -34,6 +34,7 @@ dependencies {
     compileOnly(projects.micronautWebsocket)
     compileOnly(libs.managed.kotlin.stdlib)
     compileOnly(libs.managed.netty.transport.native.unix.common)
+    compileOnly(libs.managed.netty.contrib.multipart.vintage)
     compileOnly(projects.micronautHttpNettyHttp3)
     compileOnly(libs.brotli4j)
 
@@ -65,7 +66,6 @@ dependencies {
     testImplementation(libs.bcpkix)
     testImplementation(libs.managed.netty.pkitesting)
     testImplementation(projects.micronautJacksonDatabind)
-    testImplementation(projects.micronautHttpTck)
 // Add Micronaut Jackson XML after v4 Migration
 //    testImplementation(libs.managed.micronaut.xml) {
 //        exclude module:'micronaut-inject'
@@ -125,12 +125,15 @@ dependencies {
         exclude(group = "io.micronaut")
     }
     testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.micronaut.test.netty.leak)
+    testRuntimeOnly(libs.managed.netty.contrib.multipart.vintage)
 }
 
 tasks.withType<Test>().configureEach {
     forkEvery = 100
     maxParallelForks = 4
     useJUnitPlatform()
+    systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
 }
 
 //tasks.withType(Test).configureEach {
