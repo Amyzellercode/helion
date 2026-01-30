@@ -1260,9 +1260,8 @@ public final class BeanDefinitionWriter implements ClassOutputWriter, BeanDefini
 
         if (buildMethodDefinition.postConstruct != null) {
             //  for "super bean definition" we only add code to trigger "initialize"
-            if (!superBeanDefinition || buildMethodDefinition.postConstruct.intercepted) {
-                classDefBuilder.addSuperinterface(TypeDef.of(InitializingBeanDefinition.class));
-
+            classDefBuilder.addSuperinterface(TypeDef.of(InitializingBeanDefinition.class));
+            if (buildMethodDefinition.postConstruct.intercepted) {
                 // Create a new method that will be invoked by the intercepted chain
                 MethodDef targetInitializeMethod = buildInitializeMethod(buildMethodDefinition.postConstruct, MethodDef.builder("initialize$intercepted")
                     .addModifiers(Modifier.PUBLIC)
@@ -1279,6 +1278,11 @@ public final class BeanDefinitionWriter implements ClassOutputWriter, BeanDefini
                         ClassTypeDef executableMethodInterceptor = createExecutableMethodInterceptor(targetInitializeMethod, "InitializeInterceptor");
                         return interceptAndReturn(aThis, methodParameters, executableMethodInterceptor, INITIALIZE_INTERCEPTOR_METHOD);
                     })
+                );
+            } else if (!superBeanDefinition) {
+                //  for "super bean definition" we only add code to trigger "initialize"
+                classDefBuilder.addMethod(
+                    buildInitializeMethod(buildMethodDefinition.postConstruct, MethodDef.override(METHOD_INITIALIZE))
                 );
             }
         }
