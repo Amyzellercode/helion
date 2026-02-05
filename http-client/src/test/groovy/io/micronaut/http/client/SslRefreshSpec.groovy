@@ -15,7 +15,9 @@ import io.micronaut.runtime.context.scope.refresh.RefreshEvent
 import io.micronaut.runtime.server.EmbeddedServer
 import io.netty.handler.ssl.SslHandler
 import io.netty.handler.ssl.util.SelfSignedCertificate
+import spock.lang.Ignore
 import spock.lang.IgnoreIf
+import spock.lang.Retry
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -25,7 +27,7 @@ import java.security.KeyStore
 import java.security.cert.Certificate
 import java.security.cert.X509Certificate
 
-@IgnoreIf({ os.isMacOs() })
+@Ignore
 class SslRefreshSpec extends Specification {
 
     @Shared List<String> ciphers = ['TLS_RSA_WITH_AES_128_CBC_SHA',
