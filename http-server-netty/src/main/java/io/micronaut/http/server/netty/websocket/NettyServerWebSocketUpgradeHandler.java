@@ -16,7 +16,6 @@
 package io.micronaut.http.server.netty.websocket;
 
 import io.micronaut.core.annotation.Internal;
-import org.jspecify.annotations.Nullable;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.execution.ExecutionFlow;
 import io.micronaut.core.propagation.PropagatedContext;
@@ -68,6 +67,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.util.AsciiString;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -156,7 +156,8 @@ public final class NettyServerWebSocketUpgradeHandler implements RequestHandler 
                 );
                 outboundAccess.attachment(errorRequest);
                 outboundAccess.closeAfterWrite();
-                try (PropagatedContext.Scope ignore = PropagatedContext.getOrEmpty().plus(new ServerHttpRequestContext(errorRequest)).propagate()) {
+
+                PropagatedContext.getOrEmpty().plus(new ServerHttpRequestContext(errorRequest)).propagate(() -> {
                     Throwable cause = e.getCause() == null ? e : e.getCause();
                     MutableHttpResponse<?> response = routeExecutor.getErrorResponseProcessor().processResponse(
                         ErrorContext.builder(errorRequest)
@@ -169,7 +170,7 @@ public final class NettyServerWebSocketUpgradeHandler implements RequestHandler 
                         response.contentType(MediaType.APPLICATION_JSON_TYPE);
                     }
                     Objects.requireNonNull(next).writeResponse(outboundAccess, errorRequest, response, null);
-                }
+                });
                 return;
             }
 
@@ -178,11 +179,11 @@ public final class NettyServerWebSocketUpgradeHandler implements RequestHandler 
                 .findFirst();
 
             WebsocketRequestLifecycle requestLifecycle = new WebsocketRequestLifecycle(routeExecutor, optionalRoute.orElse(null));
-            ExecutionFlow<HttpResponse<?>> responseFlow = ExecutionFlow.async(ctx.channel().eventLoop(), () -> {
-                try (PropagatedContext.Scope ignore = PropagatedContext.getOrEmpty().plus(new ServerHttpRequestContext(msg)).propagate()) {
-                    return requestLifecycle.handle(msg);
-                }
-            });
+            ExecutionFlow<HttpResponse<?>> responseFlow = ExecutionFlow.async(
+                ctx.channel().eventLoop(),
+                () -> PropagatedContext.getOrEmpty().plus(new ServerHttpRequestContext(msg))
+                    .propagate(() -> requestLifecycle.handle(msg))
+            );
             responseFlow.onComplete((response, throwable) -> {
                 if (response == null) {
                     return;
