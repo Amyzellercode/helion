@@ -1,4 +1,3 @@
-# Micronaut Function Client
+# Helion Function Client
 
 This module provides abstractions over invoking Serverless Functions.
-

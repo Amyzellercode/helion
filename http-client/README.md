@@ -1,4 +1,3 @@
-# Micronaut HTTP Client
+# Helion HTTP Client
 
-This module provides an implementation of the Micronaut HTTP Client interfaces for RxJava 2.
-
+This module provides an implementation of the Helion HTTP Client interfaces for RxJava 2.

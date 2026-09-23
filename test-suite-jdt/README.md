@@ -1,7 +1,7 @@
 # test-suite-jdt
 
 A test suite that compiles with the **Eclipse JDT compiler (ECJ)** instead of javac, so that the
-Micronaut annotation processors are exercised against JDT's `javax.lang.model` implementation.
+Helion annotation processors are exercised against JDT's `javax.lang.model` implementation.
 
 Both compilers are standards compliant, but the specification deliberately leaves things open —
 most notably the order of `TypeElement.getEnclosedElements()` and the shape of compiler synthesised
@@ -24,7 +24,7 @@ example of a bug that only reproduced when building from Eclipse.
 **Differential** (`AbstractCompilerParitySpec`) compiles the same sources twice, once with javac and
 once with ECJ, then renders every generated bean definition, introspection and metadata resource as
 a stable string and asserts the two are identical. Because javac is the reference implementation
-that Micronaut is developed against, any difference is a Micronaut bug rather than a compiler bug.
+that Helion is developed against, any difference is a Helion bug rather than a compiler bug.
 Adding coverage is just adding a source snippet.
 
 Two things are normalised before comparing, because they are not properties of the generated

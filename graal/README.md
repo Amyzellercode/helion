@@ -1,4 +1,3 @@
-# Micronaut GraalVM
+# Helion GraalVM
 
 This module provides additional code generation facilities for producing GraalVM configuration.
-

@@ -1,4 +1,3 @@
-# Micronaut HTTP Client
+# Helion HTTP Client
 
-This module provides a Reactive HTTP client based on the Micronaut and Reactive streams APIs.
-
+This module provides a Reactive HTTP client based on the Helion and Reactive streams APIs.
