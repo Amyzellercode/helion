@@ -1,8 +1,8 @@
 # Helion
 
-[![Build Status](https://github.com/Amyzellercode/micronaut-core/workflows/Java%20CI/badge.svg)](https://github.com/Amyzellercode/micronaut-core/actions)
+[![Build Status](https://github.com/Amyzellercode/helion/workflows/Java%20CI/badge.svg)](https://github.com/Amyzellercode/helion/actions)
 
-[Helion](https://github.com/Amyzellercode/micronaut-core) is a modern, JVM-based, full stack Java framework designed for building modular, easily testable JVM applications with support for Java, Kotlin and the Groovy language.
+[Helion](https://github.com/Amyzellercode/helion) is a modern, JVM-based, full stack Java framework designed for building modular, easily testable JVM applications with support for Java, Kotlin and the Groovy language.
 
 The framework takes inspiration from lessons learned over the years building real-world applications from monoliths to microservices using Spring, Spring Boot and the Grails framework.
 
